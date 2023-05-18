@@ -1,0 +1,135 @@
+/*creating a library and importing the data */
+libname tsa"/home/u61875322/Programing for analytics/Data";
+PROC IMPORT DATAFILE="/home/u61875322/Programing for analytics/Data/TSAClaims2002_2017.csv" DBMS=CSV out=tsa.result_one ;
+
+
+/* sorting the data according to the accending order of the incedent date */
+proc sort data=tsa.Claims_NoDups;
+ by Incident_Date;
+ run;
+ 
+data tsa.data_cleaned;
+set tsa.result_one;
+
+/*formating and giving labels to all teh coloumn names as specified in the table */
+format Incident_Date date9.;
+format Date_Received date9.;
+format Close_Amount Dollar20.2;
+label Airport_Code="Airport Code"
+ Airport_Name="Airport Name"
+ Claim_Number="Claim Number"
+ Claim_Site="Claim Site"
+ Claim_Type="Claim Type"
+ Close_Amount="Close Amount"
+ Date_Issues="Date Issues"
+ Date_Received="Date Received"
+ Incident_Date="Incident Date"
+ Item_Category="Item Category";
+
+
+/* condition for claim_type coloumn*/
+if claim_type="" or claim_type="-" then claim_type="unknown";
+else if Claim_Type = 'Passenger Property Loss/Personal Injury' then
+Claim_Type='Passenger Property Loss';
+else if Claim_Type = 'Passenger Property Loss/Personal Injury' then
+Claim_Type='Passenger Property Loss';
+else if Claim_Type = 'Property Damage/Personal Injury' then
+Claim_Type='Property Damage';
+
+
+/* condition for claim_site coloumn*/
+if claim_site="" or claim_site="-" then claim_site="unknown";
+
+
+/* condition for disposition coloumn*/
+if disposition="" or disposition="-" then disposition="unknown";
+else if Disposition='Closed: Canceled' then
+ Disposition='Closed:Canceled';
+else if Disposition='losed: Contractor Claim' then
+Disposition='Closed:Contractor Claim';
+drop county city;
+
+/* convrerting the value of state in upercase*/
+State=upcase(state);
+/* convrerting the value of stateName in propcase*/
+StateName=propcase(StateName);
+
+/* making new coloumn Date_Issues*/
+if (Incident_Date > Date_Received or
+ Incident_Date = . or
+ Date_Received = . or
+ year(Incident_Date) < 2002 or
+ year(Incident_Date) > 2017 or
+ year(Date_Received) < 2002 or
+ year(Date_Received) > 2017) then Date_Issues="Needs Review";
+
+run;
+
+/* removing all the duplicate rows from the data cleaned table*/
+proc sort data=tsa.data_cleaned 
+out=tsa.Claims_NoDups
+nodupkey;
+by _all_;
+run;
+
+
+
+
+/* -----------Analysis of the data and creating a report--------------*/
+
+
+/* Analyze the overall data to answer the business questions. Be sure to add appropriate 
+titles.*/
+
+ods pdf file="/home/u61875322/Programing for analytics/Data/ClaimsReports.pdf" style=Meadow;
+title1 "KUNJ JARIWALA  ROLL NO: A024 B-TECH IT";
+title2 "Overall Date Issues in the Data";
+proc freq data=tsa.claims_nodups;
+ table Date_Issues / nocum nopercent;
+run;
+title;
+
+ods graphics on;
+title "Overall Claims by Year";
+proc freq data=TSA.claims_nodups;
+ table Incident_Date / nocum nopercent plots=freqplot;
+ format Incident_Date year4.;
+ where Date_Issues is null;
+run;
+title;
+
+/* Analyze the state-level data to answer the business questions. Be sure to add 
+appropriate titles*/
+
+%let StateName=California;
+title "&StateName Claim Types, Claim Sites and Disposition 
+Frequencies";
+proc freq data=TSA.claims_nodups order=freq;
+ table Claim_Type Claim_Site Disposition / nocum nopercent;
+ where StateName="&StateName" and Date_Issues is null;
+run;
+
+title "Close_Amount Statistics for &StateName";
+proc means data=TSA.claims_nodups mean min max sum maxdec=0;
+ var Close_Amount;
+ where StateName="&StateName" and Date_Issues is null;
+run;
+title;
+
+%let StateName= C;
+ods proclabel "Claim Types, Claim Sites and Disposition Frequencies Values of &StateName";
+title "Claim Types, Claim Sites and Disposition Frequencies Values of California";
+proc freq data=TSA.claims_nodups;
+table Claim_Type Claim_Site Disposition / nocum nopercent;
+where StateName="&StateName" and Date_Issues is null;
+run;
+title;
+
+ods proclabel "Close Amount for California";
+title "Close Amount for California";
+proc means  data=TSA.claims_nodups mean min max sum maxdec=0;
+var Close_Amount;
+where StateName="&StateName" and Date_Issues is null;
+run;
+title;
+ods pdf close;
