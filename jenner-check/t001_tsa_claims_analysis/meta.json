@@ -1,0 +1,7 @@
+{
+  "bundle": "t001_tsa_claims_analysis",
+  "source_file": "project_A024_kunj 1.sas",
+  "source_blob_sha": "3bf51cd4b0867c2cb9382d7d06065cb708958a77",
+  "source_commit": "65676a47c2a2d271b818aa04ccd94c8ff6ceaf9f",
+  "notes": "TSA Claims 2002-2017 cleaning + analysis pipeline. Upstream imported TSAClaims2002_2017.csv from a SAS OnDemand home path (/home/u61875322/...) via PROC IMPORT; that CSV ships only inside a .rar in the repo, so the two data-source lines (libname to the remote path + PROC IMPORT) were replaced by a DATA step building tsa.result_one from a 20-row inline TSA-Claims-shaped sample, and the tsa libname was pointed at the bundle dir. The author's cleaning DATA step (labels/formats, claim_type/claim_site/disposition remaps, upcase/propcase, Date_Issues flagging), nodupkey dedup, and the first four analysis blocks (PROC FREQ Date_Issues, FREQ Incident_Date, FREQ Claim_Type/Site/Disposition for California, PROC MEANS Close_Amount) run unchanged. Trailing two blocks (%let StateName=C) were dropped: their where StateName=\"C\" matches no rows even in the original, producing empty output. ODS PDF path made relative."
+}

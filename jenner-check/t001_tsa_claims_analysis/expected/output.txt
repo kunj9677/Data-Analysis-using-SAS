@@ -1,0 +1,60 @@
+                                         KUNJ JARIWALA  ROLL NO: A024 B-TECH IT
+                                            Overall Date Issues in the Data
+
+                                                   The FREQ Procedure
+
+Date Issues     Frequency
+--------------------------
+Needs Review            5
+                                                 Overall Claims by Year
+
+                                                   The FREQ Procedure
+
+Incident Date    Frequency
+---------------------------
+2002                     2
+2003                     1
+2004                     1
+2005                     1
+2007                     1
+2008                     1
+2009                     1
+2010                     1
+2011                     1
+2012                     1
+2013                     1
+2015                     1
+2016                     1
+2017                     1
+                            California Claim Types, Claim Sites and Disposition
+Frequencies
+
+                                                   The FREQ Procedure
+
+Claim Type                 Frequency
+-------------------------------------
+Passenger Property Loss            5
+unknown                            2
+Property Damage                    1
+
+Claim Site         Frequency
+-----------------------------
+Checkpoint                 7
+Checked Baggage            1
+
+Disposition                Frequency
+-------------------------------------
+Settled                            4
+Approved in Full                   1
+Closed:Canceled                    1
+Closed:Contractor Claim            1
+Denied                             1
+                                         Close_Amount Statistics for California
+
+                                                  The MEANS Procedure
+
+ Variable      Label                  Mean     Minimum        Maximum            Sum
+ -----------------------------------------------------------------------------------
+ Close_Amount  Close Amount        $476.05       $0.00      $1,200.00      $3,808.39
+ -----------------------------------------------------------------------------------
+

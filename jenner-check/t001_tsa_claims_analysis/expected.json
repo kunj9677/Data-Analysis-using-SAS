@@ -1,0 +1,15 @@
+{
+  "_captured_at": "2026-07-23T11:48:15Z",
+  "_captured_run_id": "r_fc86e0f58d4f47b2869cb362bc0c7e5c",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote tsa.result_one (20 rows, 14 columns).",
+    "NOTE: Wrote tsa.data_cleaned (20 rows, 13 columns).",
+    "NOTE: Wrote tsa.Claims_NoDups (20 rows, 13 columns).",
+    "NOTE: PROC FREQ statement used.",
+    "NOTE: PROC MEANS statement used."
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}
